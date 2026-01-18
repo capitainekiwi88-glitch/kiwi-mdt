@@ -1,0 +1,391 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-background: #0d0d0d;
+  
+  /* Ajout d'une couleur Gold spécifique pour la Police/MDT */
+  --color-gold: #fbbf24;
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fef3c7;
+  --color-gold-200: #fde68a;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+  --color-gold-700: #b45309;
+  --color-gold-800: #92400e;
+  --color-gold-900: #78350f;
+
+  --color-primary: #ed2939;
+  --color-primary-50: #fbd2d6;
+  --color-primary-100: #f7a5ad;
+  --color-primary-200: #f37884;
+  --color-primary-300: #ef4b5b;
+  --color-primary-400: #eb1e32;
+  --color-primary-500: #ed2939;
+  --color-primary-600: #cd1121;
+  --color-primary-700: #990d18;
+  --color-primary-800: #650910;
+  --color-primary-900: #310408;
+  --color-primary-950: #180204;
+  --color-body: #f5f5f5;
+  --color-danger: #f8081c;
+  --color-danger-50: #fdbbc0;
+  --color-danger-100: #fca7ae;
+  --color-danger-200: #f9838e;
+  --color-danger-300: #f65f5f;
+  --color-danger-400: #f33b32;
+  --color-danger-500: #f01708;
+  --color-danger-600: #e70000;
+  --color-danger-700: #b00000;
+  --color-danger-800: #790000;
+  --color-danger-900: #420000;
+  --color-danger-950: #210000;
+  --color-success: #00dd5c;
+  --color-success-50: #96ffc1;
+  --color-success-100: #81ffb6;
+  --color-success-200: #58ff9e;
+  --color-success-300: #30ff86;
+  --color-success-400: #08ff6e;
+  --color-success-500: #00dd5c;
+  --color-success-600: #00a545;
+  --color-success-700: #006d2d;
+  --color-success-800: #003516;
+  --color-success-900: #000000;
+  --color-success-950: #000000;
+  --color-warning: #fff346;
+  --color-warning-50: #fffffe;
+  --color-warning-100: #fffee9;
+  --color-warning-200: #fffbc0;
+  --color-warning-300: #fff898;
+  --color-warning-400: #fff66f;
+  --color-warning-500: #fff346;
+  --color-warning-600: #ffef0d;
+  --color-warning-700: #d5c700;
+  --color-warning-800: #9d9300;
+  --color-warning-900: #655e00;
+  --color-warning-950: #494400;
+  --color-info: #17a1fd;
+  --color-info-50: #cdebff;
+  --color-info-100: #b9e3fe;
+  --color-info-200: #90d2fe;
+  --color-info-300: #68c2fe;
+  --color-info-400: #3fb1fd;
+  --color-info-500: #17a1fd;
+  --color-info-600: #0284da;
+  --color-info-700: #0162a2;
+  --color-info-800: #01406b;
+  --color-info-900: #001f33;
+  --color-info-950: #000e17;
+  --font-sans: "Inter", sans-serif;
+  --color-neutral-50: #f5f5f5;
+  --color-neutral-100: #e0e0e0;
+  --color-neutral-200: #c2c2c2;
+  --color-neutral-300: #a3a3a3;
+  --color-neutral-400: #858585;
+  --color-neutral-500: #666666;
+  --color-neutral-600: #4d4d4d;
+  --color-neutral-700: #333333;
+  --color-neutral-800: #1a1a1a;
+  --color-neutral-900: #0d0d0d;
+  --color-neutral-950: #000000;
+}
+
+:root {
+  /* HUD Color Palette */
+  --hud-health-low: #ff1744;
+  --hud-health-mid: #ff9800;
+  --hud-health-high: #4caf50;
+  --hud-armor: #2196f3;
+  --hud-stress: #9443ff;
+
+  --hud-thirst: #00bcd4;
+  --hud-hunger: #ff5722;
+  --hud-vocal-whisper: #00bcd4;
+  --hud-vocal-normal: #4caf50;
+  --hud-vocal-shout: #ff9800;
+  --hud-neutral: #607d8b;
+
+  --hud-bg-base: rgba(20, 20, 20, 0.85);
+  --hud-bg-hover: rgba(25, 25, 25, 0.9);
+  --hud-border-base: rgba(255, 255, 255, 0.15);
+  --hud-border-hover: rgba(255, 255, 255, 0.25);
+  --hud-text-primary: rgba(255, 255, 255, 0.95);
+  --hud-text-secondary: rgba(255, 255, 255, 0.8);
+
+  --hud-icon-sm: 32px;
+  --hud-icon-md: 40px;
+  --hud-icon-lg: 48px;
+  --hud-border-radius: 10px;
+  --hud-progress-height: 3px;
+  --hud-ring-width: 2px;
+}
+
+@layer base {
+  html {
+    @apply font-sans text-body;
+  }
+}
+
+@layer components {
+  /* =========================================
+     MDT / CAD SPECIFIC STYLES (NOUVEAU)
+     ========================================= */
+  
+/* Fond global style "Nuit" pour le MDT */
+  .mdt-bg {
+    /* J'ai changé bg-neutral-900/80 en bg-neutral-950 (presque noir total) */
+    @apply fixed inset-0 flex items-center justify-center bg-neutral-950 text-white z-50;
+  }
+  
+  .mdt-bg-gradient {
+    @apply absolute inset-0 z-0;
+    /* J'ai renforcé le violet ici pour coller à ton image */
+    background: radial-gradient(circle at center, rgba(49, 46, 129, 0.6) 0%, rgba(10, 10, 10, 0.9) 70%, #000000 100%);
+  }
+
+  /* Inputs spécifiques MDT (Encadrés, pas soulignés) */
+  .mdt-input {
+    @apply w-full bg-black/40 border border-neutral-600 text-white placeholder-neutral-500 px-4 py-3 outline-none transition-all duration-300;
+  }
+
+  .mdt-input:focus {
+    /* Utilisation de la nouvelle couleur Gold pour le focus */
+    @apply border-gold-400 bg-black/60 shadow-[0_0_15px_rgba(251,191,36,0.1)];
+  }
+
+  /* Select spécifique MDT */
+  .mdt-select {
+    @apply w-full bg-black/40 border border-neutral-600 text-white px-4 py-3 outline-none appearance-none transition-all duration-300 cursor-pointer;
+  }
+  
+  .mdt-select:focus {
+    @apply border-gold-400 bg-black/60;
+  }
+  
+  /* Bouton d'action principal MDT */
+  .mdt-btn {
+    @apply w-full bg-neutral-900/90 border border-neutral-600 text-white font-bold py-3 px-6 transition-all duration-300 uppercase tracking-widest;
+  }
+  
+  .mdt-btn:hover {
+    @apply bg-neutral-800 border-white text-gold-400 shadow-[0_0_15px_rgba(255,255,255,0.1)];
+  }
+
+  /* Lignes de décoration */
+  .mdt-divider {
+    @apply h-0.5 bg-blue-200/40 shadow-[0_0_8px_rgba(191,219,254,0.4)];
+  }
+
+  /* =========================================
+     FIN MDT STYLES
+     ========================================= */
+
+  /* Glass in/out animations */
+  @keyframes glassIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes glassOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .animate-glass-in {
+    animation: glassIn 300ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  .animate-glass-out {
+    animation: glassOut 250ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* ... (Reste de tes styles existants inchangés ci-dessous pour compatibilité) ... */
+  
+  .btn {
+    @apply px-4 py-2 w-full max-w-xs font-bold flex justify-center items-center gap-2 cursor-pointer relative overflow-hidden;
+    background: rgba(17, 17, 17, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .btn::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%);
+    border-radius: 12px;
+    opacity: 0.6;
+  }
+
+  .btn:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .btn:active {
+    transform: translateY(0px) scale(0.95);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-full-width { @apply w-full max-w-none; }
+
+  /* Color variants matching your file */
+  .btn-primary {
+    background: rgba(237, 41, 57, 0.15);
+    border-color: rgba(237, 41, 57, 0.3);
+    color: rgba(237, 41, 57, 0.95);
+  }
+  .btn-primary:hover {
+    background: rgba(237, 41, 57, 0.25);
+    border-color: rgba(237, 41, 57, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(237, 41, 57, 0.3);
+  }
+
+  .btn-success {
+    background: rgba(0, 221, 92, 0.15);
+    border-color: rgba(0, 221, 92, 0.3);
+    color: rgba(0, 221, 92, 0.95);
+  }
+  .btn-success:hover {
+    background: rgba(0, 221, 92, 0.25);
+    border-color: rgba(0, 221, 92, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(0, 221, 92, 0.3);
+  }
+
+  .btn-warning {
+    background: rgba(255, 243, 70, 0.15);
+    border-color: rgba(255, 243, 70, 0.3);
+    color: rgba(255, 243, 70, 0.95);
+  }
+  .btn-warning:hover {
+    background: rgba(255, 243, 70, 0.25);
+    border-color: rgba(255, 243, 70, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(255, 243, 70, 0.3);
+  }
+
+  .btn-danger {
+    background: rgba(248, 8, 28, 0.15);
+    border-color: rgba(248, 8, 28, 0.3);
+    color: rgba(248, 8, 28, 0.95);
+  }
+  .btn-danger:hover {
+    background: rgba(248, 8, 28, 0.25);
+    border-color: rgba(248, 8, 28, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(248, 8, 28, 0.3);
+  }
+
+  .btn-neutral {
+    background: rgba(115, 115, 115, 0.15);
+    border-color: rgba(115, 115, 115, 0.3);
+    color: rgba(245, 245, 245, 0.9);
+  }
+  .btn-neutral:hover {
+    background: rgba(115, 115, 115, 0.25);
+    border-color: rgba(115, 115, 115, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(115, 115, 115, 0.3);
+  }
+
+  /* Standard Input Styles (Original) */
+  .input {
+    @apply p-2 w-full border-b rounded-t-md bg-transparent shadow-xl shadow-transparent border-neutral-500 placeholder:text-neutral-500 transition-all duration-300;
+  }
+  .input:focus {
+    @apply outline-none bg-neutral-900/60 shadow-primary/10 border-primary;
+  }
+
+  .select {
+    @apply appearance-none w-full p-2 pr-8 border rounded text-neutral-200 bg-neutral-900 border-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all duration-300;
+  }
+  .select option {
+    @apply bg-neutral-900 text-neutral-200;
+  }
+
+  .textarea {
+    @apply p-2 w-full border rounded bg-transparent shadow-xl shadow-transparent border-neutral-700 placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all duration-300;
+  }
+  .textarea:focus {
+    @apply outline-none bg-neutral-900/60 shadow-primary/10;
+  }
+
+  .radio {
+    @apply appearance-none w-5 h-5 border shadow-md shadow-transparent rounded-full bg-transparent border-neutral-700 focus:outline-none focus:border-transparent hover:border-primary/70 transition-all duration-300 cursor-pointer relative;
+  }
+  .radio:checked {
+    @apply border-primary bg-primary/20 shadow-primary/30;
+  }
+  .radio:checked::before {
+    content: "";
+    @apply absolute w-2.5 h-2.5 bg-primary rounded-full;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .checkbox-custom {
+    @apply appearance-none w-5 h-5 border shadow-md shadow-transparent rounded bg-transparent border-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent hover:border-primary/70 transition-all duration-300 cursor-pointer relative;
+  }
+  .checkbox-custom:checked {
+    @apply border-primary bg-primary/20 shadow-primary/30;
+  }
+  .checkbox-custom:checked::after {
+    content: "✓";
+    @apply absolute text-primary text-sm font-bold;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+  }
+
+  /* Card Styles */
+  .card {
+    @apply w-full max-w-md mx-4 relative overflow-hidden;
+    background: rgba(17, 17, 17, 0.712);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%);
+    border-radius: 12px;
+    opacity: 0.6;
+  }
+  .card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .card-header { @apply flex justify-between items-center p-4 border-b relative z-10; border-color: rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.03); border-radius: 12px 12px 0 0; }
+  .card-body { @apply text-neutral-200 leading-relaxed p-4 relative z-10; background: rgba(255, 255, 255, 0.01); border-radius: 0 0 12px 12px; }
+  .card-title { @apply text-2xl font-bold flex items-center gap-2 relative z-10; color: rgba(255, 255, 255, 0.95); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); }
+
+  .glass {
+    @apply overflow-hidden relative;
+    background: rgba(17, 17, 17, 0.459);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  }
+  .glass::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%);
+    border-radius: 12px;
+    opacity: 0.6;
+  }
+}
+
+input[type="number"] { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Accident de la route - Collision multiple",
+    "listImg": ["/images/accident1.jpg", "/images/accident2.jpg"],
+    "vehiculesInvolved": ["BMW X5 - ABC123", "Toyota Corolla - DEF456"],
+    "tags": ["lspdh", "urgence", "accident"],
+    "officersInvolved": ["Agent Smith - Badge #1234", "Agent Johnson - Badge #5678"],
+    "description": "Collision entre deux véhicules sur l'autoroute 1. Un blessé grave transporté à l'hôpital.\n\nDate d'ouverture: 2024-01-15\nRempli par: Agent Smith (Badge #1234)\n\nDétails de l'incident: Collision frontale à haute vitesse\nPreuves: Photos des lieux, témoignages\n\nEtat de l'investigation: En cours\n\nNotes additionnelles: Victime en soins intensifs",
+    "civiliansInvolved": ["John Doe - Victime", "Jane Smith - Témoin"],
+    "criminalsInvolved": [],
+    "job": "lspd"
+  },
+  {
+    "id": 2,
+    "title": "Consultation médicale d'urgence",
+    "listImg": ["/images/medical1.jpg"],
+    "vehiculesInvolved": [],
+    "tags": ["lspdh", "urgence", "medical"],
+    "officersInvolved": ["Dr. Wilson - Médecin chef"],
+    "description": "Patient admis aux urgences suite à un accident de voiture.\n\nDate d'ouverture: 2024-01-15\nRempli par: Dr. Wilson (Service médical)\n\nDétails de l'incident: Traumatismes multiples, fractures ouvertes\nPreuves: Radio, examens sanguins\n\nEtat de l'investigation: Terminé - Patient stabilisé\n\nNotes additionnelles: Transfert en chirurgie demain",
+    "civiliansInvolved": ["John Doe - Patient"],
+    "criminalsInvolved": [],
+    "job": "lspdh"
+  },
+  {
+    "id": 3,
+    "title": "Enquête sur trafic de stupéfiants",
+    "listImg": ["/images/drugs1.jpg", "/images/drugs2.jpg"],
+    "vehiculesInvolved": ["Van suspect - XYZ789"],
+    "tags": ["fib", "stupefiants", "enquete"],
+    "officersInvolved": ["Agent spécial Davis - FIB", "Agent spécial Miller - FIB"],
+    "description": "Saisie importante de cocaïne dans un entrepôt abandonné.\n\nDate d'ouverture: 2024-01-14\nRempli par: Agent spécial Davis (FIB)\n\nDétails de l'incident: 50kg de cocaïne saisis, 3 suspects arrêtés\nPreuves: Photos de la saisie, vidéos de surveillance\n\nEtat de l'investigation: En cours - Interrogatoires\n\nNotes additionnelles: Possible réseau international impliqué",
+    "civiliansInvolved": [],
+    "criminalsInvolved": ["Carlos Mendez - Suspect principal", "Maria Lopez - Complice", "Juan Garcia - Complice"],
+    "job": "fib"
+  },
+  {
+    "id": 4,
+    "title": "Rapport d'autopsie - Affaire #2024-001",
+    "listImg": ["/images/autopsy1.jpg"],
+    "vehiculesInvolved": [],
+    "tags": ["lspdh", "lspd", "autopsie", "homicide"],
+    "officersInvolved": ["Dr. Wilson - Médecin légiste", "Agent Smith - Policier enquêteur"],
+    "description": "Autopsie de la victime trouvée dans l'affaire d'homicide du centre-ville.\n\nDate d'ouverture: 2024-01-16\nRempli par: Dr. Wilson (Médecin légiste)\n\nDétails de l'incident: Mort par strangulation, traces de lutte\nPreuves: Photos du corps, analyses toxicologiques\n\nEtat de l'investigation: Rapport finalisé\n\nNotes additionnelles: ADN du suspect retrouvé sous les ongles de la victime",
+    "civiliansInvolved": ["Sarah Johnson - Victime"],
+    "criminalsInvolved": ["Suspect non identifié - ADN prélevé"],
+    "job": "lspdh"
+  },
+  {
+    "id": 5,
+    "title": "Incident diplomatique - Ambassade",
+    "listImg": ["/images/diplomat1.jpg"],
+    "vehiculesInvolved": ["Voiture diplomatique - DIP001"],
+    "tags": ["fib", "mairie", "diplomatique"],
+    "officersInvolved": ["Agent spécial Brown - FIB", "Maire adjoint Johnson - Mairie"],
+    "description": "Incident impliquant un diplomate étranger et des manifestants.\n\nDate d'ouverture: 2024-01-17\nRempli par: Agent spécial Brown (FIB)\n\nDétails de l'incident: Manifestation dégénérée devant l'ambassade\nPreuves: Vidéos de surveillance, témoignages\n\nEtat de l'investigation: Résolu - Diplomate raccompagné\n\nNotes additionnelles: Relations internationales préservées",
+    "civiliansInvolved": ["Ambassadeur étranger", "Manifestants (anonymes)"],
+    "criminalsInvolved": [],
+    "job": "fib"
+  }
+]

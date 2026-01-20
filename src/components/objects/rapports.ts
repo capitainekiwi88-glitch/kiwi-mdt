@@ -6,11 +6,13 @@ interface RapportData {
     listImg?: string[];
     vehiculesInvolved?: string[];
     tags?: string[];
+    type?: string;
     officersInvolved?: string[];
     description: string;
     civiliansInvolved?: string[];
     criminalsInvolved?: string[];
     job: string;
+    timestamp?: number;
 }
 
 export class Rapport {
@@ -19,11 +21,13 @@ export class Rapport {
     private _listImg: string[];
     private _vehiculesInvolved: string[];
     private _tags: string[];
+    private _type: string;
     private _officersInvolved: string[];
     private _description: string;
     private _civiliansInvolved: string[];
     private _criminalsInvolved: string[];
     private _job: string;
+    private _timestamp: number;
 
     constructor(
         id = 0,
@@ -31,22 +35,26 @@ export class Rapport {
         listImg: string[] = [],
         vehiculesInvolved: string[] = [],
         tags: string[] = [],
+        type: string | undefined = undefined,
         officersInvolved: string[] = [],
         description = "Template rapport \n\n Date d'ouverture: \n Rempli par: (Nom et matricule) \n\n Détails de l'incident: \n Preuves: \n\n Etat de l'investigation: \n\n Notes additionnelles: ",
         civiliansInvolved: string[] = [],
         criminalsInvolved: string[] = [],
-        job: string
+        job: string,
+        timestamp: number = Date.now()
     ) {
         this._id = id;
         this._title = title;
         this._listImg = listImg;
         this._vehiculesInvolved = vehiculesInvolved;
         this._tags = tags;
+        this._type = type ?? (tags[0] || "Type non défini");
         this._officersInvolved = officersInvolved;
         this._description = description;
         this._civiliansInvolved = civiliansInvolved;
         this._criminalsInvolved = criminalsInvolved;
         this._job = job;
+        this._timestamp = timestamp;
     }
 
     // Getters
@@ -55,16 +63,19 @@ export class Rapport {
     get listImg(): string[] { return this._listImg; }
     get vehiculesInvolved(): string[] { return this._vehiculesInvolved; }
     get tags(): string[] { return this._tags; }
+    get type(): string { return this._type; }
     get officersInvolved(): string[] { return this._officersInvolved; }
     get description(): string { return this._description; }
     get civiliansInvolved(): string[] { return this._civiliansInvolved; }
     get criminalsInvolved(): string[] { return this._criminalsInvolved; }
     get job(): string { return this._job; }
+    get timestamp(): number { return this._timestamp; }
 
     // Setters
     set title(value: string) { this._title = value; }
     set description(value: string) { this._description = value; }
     set tags(value: string[]) { this._tags = value; }
+    set type(value: string) { this._type = value; }
 
     /**
      * Récupère tous les rapports accessibles pour un métier donné
@@ -86,11 +97,13 @@ export class Rapport {
             listImg: this._listImg,
             vehiculesInvolved: this._vehiculesInvolved,
             tags: this._tags,
+            type: this._type,
             officersInvolved: this._officersInvolved,
             description: this._description,
             civiliansInvolved: this._civiliansInvolved,
             criminalsInvolved: this._criminalsInvolved,
             job: this._job
+            , timestamp: this._timestamp
         };
     }
 
@@ -140,6 +153,9 @@ export class Rapport {
             // Essayer d'abord de charger depuis localStorage temporaire (fallback)
             const localReports: RapportData[] = JSON.parse(localStorage.getItem('mdt_reports_temp') || '[]');
 
+            // Récupérer la liste des IDs supprimés (permet de masquer aussi les rapports de base)
+            const deletedIds: number[] = JSON.parse(localStorage.getItem('mdt_reports_deleted') || '[]');
+
             // Combiner avec les rapports par défaut
             const allRapports: RapportData[] = [...rapportsData, ...localReports];
 
@@ -150,21 +166,28 @@ export class Rapport {
                 data.listImg || [],
                 data.vehiculesInvolved || [],
                 data.tags || [],
+                data.type,
                 data.officersInvolved || [],
                 data.description,
                 data.civiliansInvolved || [],
                 data.criminalsInvolved || [],
-                data.job
+                data.job,
+                data.timestamp ?? Date.now()
             ));
 
-            // Filtrer les rapports accessibles pour ce métier
+            // Filtrer les rapports accessibles pour ce métier et non supprimés
             return rapports.filter(rapport => {
+                // Masquer les rapports marqués supprimés
+                if (deletedIds.includes(rapport.id)) return false;
+
                 // Le rapport est accessible si :
                 // 1. Il a été créé par quelqu'un du même métier
-                const createdBySameJob = rapport.job === metier;
+                const createdBySameJob = rapport.job?.toLowerCase() === metier.toLowerCase();
 
-                // 2. OU il possède un tag correspondant au métier
-                const hasMatchingTag = rapport.tags.includes(metier);
+                // 2. OU il possède un tag correspondant au métier (ex: tag "LSPD" visible par job "lspd")
+                const hasMatchingTag = rapport.tags?.some(
+                    tag => tag.toUpperCase() === metier.toUpperCase()
+                );
 
                 return createdBySameJob || hasMatchingTag;
             });

@@ -21,17 +21,32 @@ interface VisibilityProviderValue {
 export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [visible, setVisible] = useState(false);
+  // En navigateur (preview/dev), on force visible à true pour voir l'UI sans event NUI.
+  const [visible, setVisible] = useState(isEnvBrowser());
 
   useNuiEvent<boolean>("setVisible", setVisible);
 
-  // Handle pressing escape/backspace
+  // Handle pressing escape (Backspace should not close the UI)
   useEffect(() => {
     // Only attach listener when we are visible
     if (!visible) return;
 
     const keyHandler = (e: KeyboardEvent) => {
-      if (["Backspace", "Escape"].includes(e.code)) {
+      // Vérifier si l'utilisateur est dans un champ de saisie
+      const target = e.target as HTMLElement;
+      const isEditable = target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.contentEditable === "true" ||
+        target.closest("input") !== null ||
+        target.closest("textarea") !== null ||
+        target.closest('[contenteditable="true"]') !== null;
+
+      // Backspace ne doit jamais fermer la tablette
+      if (e.code === "Backspace") return;
+
+      // Fermer uniquement sur Escape
+      if (e.code === "Escape") {
         if (!isEnvBrowser()) fetchNui("hideFrame");
         else setVisible(!visible);
       }

@@ -1,72 +1,102 @@
 -- Serveur MDT - Gestion des rapports
 -- Sauvegarde les rapports dans un fichier JSON
 
--- Chemin vers le fichier des rapports
 local REPORTS_FILE = 'reports_data.json'
+local RESOURCE_NAME = GetCurrentResourceName()
 
 -- Fonction pour charger les rapports depuis le fichier JSON
 local function LoadReports()
-    local file = io.open(REPORTS_FILE, 'r')
-    if file then
-        local content = file:read('*all')
-        file:close()
-        return json.decode(content) or {}
+    local content = LoadResourceFile(RESOURCE_NAME, REPORTS_FILE)
+    if content then
+        local ok, data = pcall(json.decode, content)
+        if ok and data then return data end
     end
     return {}
 end
 
 -- Fonction pour sauvegarder les rapports dans le fichier JSON
 local function SaveReports(reports)
-    local file = io.open(REPORTS_FILE, 'w')
-    if file then
-        file:write(json.encode(reports, { indent = true }))
-        file:close()
-        print('Rapports sauvegardés dans ' .. REPORTS_FILE)
-        return true
+    local ok, encoded = pcall(json.encode, reports)
+    if not ok then
+        print("Erreur: Impossible d'encoder les rapports")
+        return false
     end
-    print('Erreur: Impossible de sauvegarder les rapports')
-    return false
+    SaveResourceFile(RESOURCE_NAME, REPORTS_FILE, encoded, -1)
+    print('Rapports sauvegardés dans ' .. REPORTS_FILE)
+    return true
 end
 
--- Événement NUI pour sauvegarder un rapport
-RegisterNUICallback('saveReport', function(data, cb)
-    if not data.report then
-        cb({ success = false, error = 'Données du rapport manquantes' })
+-- Sauvegarder un rapport (appel côté client, réponse renvoyée au client)
+RegisterNetEvent('kiwi-mdt:saveReport', function(requestId, report)
+    local src = source
+    if not report then
+        TriggerClientEvent('kiwi-mdt:saveReport:resp', src, requestId, { success = false, error = 'Données du rapport manquantes' })
         return
     end
 
-    -- Charger les rapports existants
     local reports = LoadReports()
 
-    -- Générer un nouvel ID si nécessaire
-    local newId = 1
-    for _, report in pairs(reports) do
-        if report.id and report.id >= newId then
-            newId = report.id + 1
+    local reportId = tonumber(report.id)
+    if reportId then
+        -- Mise à jour
+        local updated = false
+        for i, rpt in ipairs(reports) do
+            if rpt.id == reportId then
+                reports[i] = report
+                updated = true
+                break
+            end
         end
+        if not updated then
+            table.insert(reports, report)
+        end
+    else
+        -- Nouveau
+        local newId = 1
+        for _, rpt in pairs(reports) do
+            if rpt.id and rpt.id >= newId then
+                newId = rpt.id + 1
+            end
+        end
+        report.id = newId
+        reportId = newId
+        table.insert(reports, report)
     end
 
-    -- Assigner l'ID au rapport
-    data.report.id = newId
-
-    -- Ajouter le rapport à la liste
-    table.insert(reports, data.report)
-
-    -- Sauvegarder dans le fichier
     local success = SaveReports(reports)
 
     if success then
-        cb({ success = true, reportId = newId })
-        print('Nouveau rapport sauvegardé - ID: ' .. newId)
+        TriggerClientEvent('kiwi-mdt:saveReport:resp', src, requestId, { success = true, reportId = reportId })
+        print('Rapport sauvegardé - ID: ' .. reportId)
     else
-        cb({ success = false, error = 'Erreur lors de la sauvegarde' })
+        TriggerClientEvent('kiwi-mdt:saveReport:resp', src, requestId, { success = false, error = 'Erreur lors de la sauvegarde' })
     end
 end)
 
--- Événement NUI pour charger les rapports
-RegisterNUICallback('loadReports', function(data, cb)
+-- Charger les rapports
+RegisterNetEvent('kiwi-mdt:loadReports', function(requestId)
+    local src = source
     local reports = LoadReports()
-    cb({ success = true, reports = reports })
+    TriggerClientEvent('kiwi-mdt:loadReports:resp', src, requestId, { success = true, reports = reports })
+end)
+
+-- Supprimer un rapport
+RegisterNetEvent('kiwi-mdt:deleteReport', function(requestId, reportId)
+    local src = source
+    reportId = tonumber(reportId)
+    if not reportId then
+        TriggerClientEvent('kiwi-mdt:deleteReport:resp', src, requestId, { success = false, error = 'ID invalide' })
+        return
+    end
+    local reports = LoadReports()
+    local filtered = {}
+    for _, rpt in ipairs(reports) do
+        if rpt.id ~= reportId then
+            table.insert(filtered, rpt)
+        end
+    end
+    local success = SaveReports(filtered)
+    TriggerClientEvent('kiwi-mdt:deleteReport:resp', src, requestId, { success = success })
 end)
 
 -- Commande de debug pour voir les rapports
